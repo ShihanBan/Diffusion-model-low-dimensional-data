@@ -138,7 +138,7 @@ def _absolute_dims(rank, dims):
     return tuple([rank + dim if dim < 0 else dim for dim in dims])
 
 
-class InvertibleBatchNorm(flax.nn.Module):
+class InvertibleBatchNorm(flax.linen.Module):
     """Invertible BatchNorm Module."""
 
     def apply(self,
