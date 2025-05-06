@@ -8,7 +8,6 @@ from jax import random
 from utils import cross_entropy_loss, Constants, leaky_relu, inv_leaky_relu, inv_dense, InvertibleBatchNorm
 from utils import relu, get_mask, squeeze_2x2
 from utils import inv_batch_norm
-w
 
 EPS = 1e-8
 
