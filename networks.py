@@ -5,11 +5,10 @@ import jax
 import flax
 from functools import partial
 from jax import random
-
 from utils import cross_entropy_loss, Constants, leaky_relu, inv_leaky_relu, inv_dense, InvertibleBatchNorm
 from utils import relu, get_mask, squeeze_2x2
 from utils import inv_batch_norm
-
+w
 
 EPS = 1e-8
 
@@ -23,7 +22,7 @@ def fill_diagonal(a, val):
     return a.at[..., i, j].set(val)
 
 
-class FullyConnectedNetwork(flax.nn.Module):
+class FullyConnectedNetwork(flax.linen.Module):
     def apply(self, x, layer_sizes, batch_norm=False, leaky=False, coefficient = True, datasets = False, if_sigmoid = False):
         for i, size in enumerate(layer_sizes):
             name = self.get_layer_name(i)
@@ -56,7 +55,7 @@ class FullyConnectedNetwork(flax.nn.Module):
         return model(data)
 
 
-class VAE(flax.nn.Module):
+class VAE(flax.linen.Module):
 
     def apply(self, x, z1, z2, epsilon, encoder_layer_sizes, decoder_layer_sizes, sampling=False, if_sigmoid = False, tunable_decoder_var = False, dataset_name = None):
         if sampling:
