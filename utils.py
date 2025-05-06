@@ -4,7 +4,7 @@ import jax.numpy as jnp
 from jax import lax
 import jax.nn.initializers as initializers
 import flax
-from flax import linen as nn:contentReference[oaicite:14]{index=14}
+from flax import linen as nn
 import numpy as np
 import cv2
 import json
