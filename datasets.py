@@ -285,4 +285,4 @@ class SigmoidDataset(DistributionDataset):
         pass
 
     def load(self, fn):
-
+        pass
