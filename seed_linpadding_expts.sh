@@ -1,4 +1,4 @@
-python run.py diffusion3linear_gaussian_12dim2 --model Diffusion --dataset linear_gaussian --encoder_layer_sizes "" --layer_sizes "" -ow --latent_dim 20  --padding_dim 9 -dd 3 --num_batches 100000  --epsilon -1 -tdv -ds 2  -lr 1e-3
+python run.py diffusion3linear_gaussian_12dim2 --dataset linear_gaussian --encoder_layer_sizes "" --layer_sizes "" -ow --latent_dim 20  --padding_dim 9 -dd 3 --num_batches 100000  --epsilon -1 -tdv -ds 2  -lr 1e-3
 
 
 
