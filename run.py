@@ -348,11 +348,11 @@ def get_model(args, dataset, output_dir):
         
     elif args.model == "Diffusion":
     
-        input_dim = dataset[0][0].shape[0]  # 假设 dataset[0] 是一个 (data, label) 或 (data, _) 元组
+        #input_dim = dataset[0][0].shape[0]  # 假设 dataset[0] 是一个 (data, label) 或 (data, _) 元组
         diffusion = Diffusion(timesteps=1000)
         net = MLPDiffusionModel(input_dim=input_dim)
 
-        model = {
+        model = diffusion{
         'model': net,
         'diffusion': diffusion,
         'dataset': dataset,
