@@ -53,7 +53,7 @@ def make_output_dir(name, overwrite, args):
         else:
             raise ValueError(f"{dirname} already exists! Use a different name")
     else:
-        os.mkdir(dirname)
+        os.makedirs(dirname, exist_ok=True)
     args_name = os.path.join(dirname, 'args.json')
     args = vars(args)
     with open(args_name, 'w') as f:
