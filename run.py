@@ -2,6 +2,7 @@ import argparse
 import jax
 from datasets import SphereDataset, LinearGaussianDataset, SigmoidDataset
 from diffusion import Diffusion
+from model import MLPDiffusionModel
 from utils import make_output_dir
 
 
@@ -346,21 +347,23 @@ def get_model(args, dataset, output_dir):
                 stop_point=args.num_batches/2)
         
     elif args.model == "Diffusion":
-        from diffusion import Diffusion
-        model = Diffusion(
-            dirname=output_dir,
-            dataset=dataset,
-            batch_size=args.batch_size,
-            num_batches=args.num_batches,
-            num_epochs=args.num_epochs,
-            learning_rate=args.learning_rate,
-            padding_dim=args.padding_dim,
-            latent_dimension=args.latent_dimension,
-            state_dict=args.state_dict,
-            tqdm=args.tqdm,
-        )
+    
+        input_dim = dataset[0][0].shape[0]  # 假设 dataset[0] 是一个 (data, label) 或 (data, _) 元组
+        diffusion = Diffusion(timesteps=1000)
+        net = MLPDiffusionModel(input_dim=input_dim)
 
-    return model
+        model = {
+        'model': net,
+        'diffusion': diffusion,
+        'dataset': dataset,
+        'batch_size': args.batch_size,
+        'num_batches': args.num_batches,
+        'num_epochs': args.num_epochs,
+        'learning_rate': args.learning_rate,
+        'output_dir': output_dir,
+        'device': "cuda" if torch.cuda.is_available() else "cpu",
+    }
+
 
 
 def main(args):
