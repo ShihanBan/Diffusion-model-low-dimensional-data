@@ -37,7 +37,7 @@ def parse_arguments():
     parser.add_argument('-did', '--dataset_intrinsic_dimension', type=int, default=3)
     parser.add_argument('-off', '--latent_off_dimension', type=int, default=1)
     args = parser.parse_args()
-    args.model="VAE"
+    args.model = "Diffusion"  
     args.latent_distribution = 'gaussian'
     args.tqdm = True
     return args
@@ -344,6 +344,22 @@ def get_model(args, dataset, output_dir):
                 tqdm=args.tqdm,
                 latent_dimension=args.latent_dimension,
                 stop_point=args.num_batches/2)
+        
+    elif args.model == "Diffusion":
+        from diffusion_model.diffusion_model import DiffusionModel
+        model = DiffusionModel(
+            dirname=output_dir,
+            dataset=dataset,
+            batch_size=args.batch_size,
+            num_batches=args.num_batches,
+            num_epochs=args.num_epochs,
+            learning_rate=args.learning_rate,
+            padding_dim=args.padding_dim,
+            latent_dimension=args.latent_dimension,
+            state_dict=args.state_dict,
+            tqdm=args.tqdm,
+        )
+
     return model
 
 
