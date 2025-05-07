@@ -8,6 +8,15 @@ import matplotlib.pyplot as plt
 from networks import FullyConnectedNetwork
 from jax.nn.initializers import normal
 
+def get_dataset(name, seed, padding_dim, batch_size, args):
+    if name == "linear_gaussian":
+        return GaussianDataset(seed, dimension=args.dd, padding_dimension=padding_dim)
+    elif name == "sigmoid_gaussian":
+        return SigmoidGaussianDataset(seed, dimension=args.dd, padding_dimension=padding_dim)
+    elif name == "sphere":
+        return SphereDataset(seed, dimension=args.dd, padding_dimension=padding_dim)
+    else:
+        raise ValueError(f"Unknown dataset: {name}")
 
 class Dataset(ABC):
 
@@ -276,4 +285,4 @@ class SigmoidDataset(DistributionDataset):
         pass
 
     def load(self, fn):
-        pass
+
