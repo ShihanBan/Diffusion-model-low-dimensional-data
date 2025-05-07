@@ -346,8 +346,8 @@ def get_model(args, dataset, output_dir):
                 stop_point=args.num_batches/2)
         
     elif args.model == "Diffusion":
-        from diffusion import DiffusionModel
-        model = DiffusionModel(
+        from diffusion import Diffusion
+        model = Diffusion(
             dirname=output_dir,
             dataset=dataset,
             batch_size=args.batch_size,
