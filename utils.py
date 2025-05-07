@@ -324,3 +324,52 @@ def sin_theta_distance(A, B):
     # eye = jnp.eye(B.shape[0])
     distmat = (U - Uprime)
     return 0.5 * jnp.linalg.norm(distmat, ord="fro")
+
+import os
+import numpy as np
+import jax.numpy as jnp
+
+def manifold_error(samples: jnp.ndarray, test_ds) -> float:
+    """
+    计算 samples 到真实流形（由 test_ds 提供）上最近点的平均欧氏距离。
+
+    Args:
+        samples: 扩散模型生成的样本，shape = (N, D)
+        test_ds: 测试集生成器/可迭代，每个元素是 shape = (batch_size, D) 的数组
+
+    Returns:
+        平均最小距离（scalar）
+    """
+    # 收集所有测试点
+    pts_list = []
+    for batch in test_ds:
+        # 如果 DataLoader 输出 (x, y) 形式的元组，取第一个元素；否则直接取 batch
+        x = batch[0] if isinstance(batch, tuple) else batch
+        pts_list.append(np.array(x))
+    all_pts = np.concatenate(pts_list, axis=0)  # (M, D)
+
+    # 计算 pairwise 距离并取最小值
+    # D_ij = ||samples[i] - all_pts[j]||
+    # 先用 NumPy，再转回 jnp
+    dists = np.linalg.norm(
+        np.expand_dims(np.array(samples), 1) - np.expand_dims(all_pts, 0),
+        axis=-1
+    )  # (N, M)
+    min_dists = np.min(dists, axis=1)  # (N,)
+
+    return float(np.mean(min_dists))
+
+def save_samples(samples: jnp.ndarray, output_dir: str, prefix: str = "samples"):
+    """
+    将生成的样本保存为 NumPy 文件，方便后续加载和可视化。
+
+    Args:
+        samples: 生成样本，shape = (N, D)
+        output_dir: run.py 中传入的实验目录名称
+        prefix: 文件名前缀
+    """
+    # 确保目录存在
+    os.makedirs(os.path.join(DATA_DIR, output_dir), exist_ok=True)
+    path = os.path.join(DATA_DIR, output_dir, f"{prefix}.npy")
+    np.save(path, np.array(samples))
+    print(f"Saved samples to {path}")
