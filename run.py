@@ -1,7 +1,7 @@
 import argparse
 import jax
 from datasets import SphereDataset, LinearGaussianDataset, SigmoidDataset
-from vae import VAEModel
+from diffusion import Diffusion
 from utils import make_output_dir
 
 
