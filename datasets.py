@@ -261,7 +261,7 @@ class SigmoidDataset(DistributionDataset):
     def shape(self):
         return (self.ndim,)
     
-    def score_batch_true(self, batch):
+    def score_batch(self, batch):
         codomain_hat = batch[:, self.dim]  # 第 d+1 维
         z = batch[:, :self.dim]
         projected = jnp.dot(z, self.A)
