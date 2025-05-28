@@ -260,15 +260,7 @@ class SigmoidDataset(DistributionDataset):
     @property
     def shape(self):
         return (self.ndim,)
-'''
-    def score_batch(self, batch):
-        codomain_hat = batch[:, self.dim]
-        codomain = jnp.dot(batch[:, :self.dim], self.A)
-        manifold_error = jnp.mean(jnp.square((codomain_hat - codomain)))
-        padding= batch[:, self.dim + 1:]
-        mse = jnp.mean(jnp.sum(jnp.square(padding), axis=1))
-        return {"Squared Norm of Padding Dimensions": mse, "Squared Norm of Manifold Dimension": manifold_error}
-'''
+    
     def score_batch_true(self, batch):
         codomain_hat = batch[:, self.dim]  # 第 d+1 维
         z = batch[:, :self.dim]
