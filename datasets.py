@@ -275,13 +275,11 @@ class SigmoidDataset(DistributionDataset):
         projected = jnp.dot(z, self.A)
         sigmoid = jax.nn.sigmoid(projected)
         manifold_error = jnp.mean(jnp.square(sigmoid - codomain_hat))
-
         padding = batch[:, self.dim + 1:]
         padding_error = jnp.mean(jnp.sum(jnp.square(padding), axis=1))
         return {
            "Squared Norm of Padding Dimensions": padding_error,
-            "True Manifold Error": manifold_error
-        }
+            "True Manifold Error": manifold_error}
 
 
     def plot_batch(self, batch, fn):
