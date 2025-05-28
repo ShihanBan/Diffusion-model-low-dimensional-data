@@ -257,27 +257,32 @@ class SigmoidDataset(DistributionDataset):
             return Y, None
         return Y
 
+    @property
+    def shape(self):
+        return (self.ndim,)
+
     def score_batch(self, batch):
-        """
-        原论文中已有的指标（保持兼容性）
-        """
         codomain_hat = batch[:, self.dim]
         codomain = jnp.dot(batch[:, :self.dim], self.A)
         manifold_error = jnp.mean(jnp.square((codomain_hat - codomain)))
-        padding = batch[:, self.dim + 1:]
+        padding= batch[:, self.dim + 1:]
         mse = jnp.mean(jnp.sum(jnp.square(padding), axis=1))
-        return {
-            "Squared Norm of Padding Dimensions": mse,
-            "Squared Norm of Manifold Dimension": manifold_error
-        }
+        return {"Squared Norm of Padding Dimensions": mse, "Squared Norm of Manifold Dimension": manifold_error}
 
-    def score_batch_true(self, batch):
-        """
-        更符合论文中文字描述的 manifold error
-        """
-        z = batch[:, :self.dim]
-        x_r1 = batch[:, self.dim]
-        proj = jnp.dot(z, self.A)
-        pred = jax.nn.sigmoid(proj)
-        error = jnp.mean(jnp.square(pred - x_r1))
-        return {"True Manifold Error": error}
+    def plot_batch(self, batch, fn):
+        size = batch.shape[0]
+        true_batch = self.get_batch(size)
+        x = jnp.dot(batch[:, :self.dim], self.A)
+        y = batch[:, self.dim]
+        plt.scatter(x, y)
+        x_org = jnp.dot(true_batch[:, :self.dim], self.A)
+        y_org = true_batch[:, self.dim]
+        plt.scatter(x_org, y_org)
+        plt.savefig(fn)
+        plt.close()
+
+    def save(self, fn):
+        pass
+
+    def load(self, fn):
+        pass
